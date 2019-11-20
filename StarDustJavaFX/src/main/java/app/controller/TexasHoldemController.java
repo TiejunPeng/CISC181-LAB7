@@ -25,6 +25,7 @@ import pkgCore.Player;
 import pkgCore.Table;
 import pkgCoreInterface.iCardDraw;
 import pkgEnum.eAction;
+import pkgEnum.eDrawCount;
 
 public class TexasHoldemController implements Initializable {
 
@@ -68,6 +69,9 @@ public class TexasHoldemController implements Initializable {
 	private HBox HBoxCardsp8;
 	@FXML
 	private HBox HBoxCardsp9;
+	
+	@FXML
+	private HBox HboxCommon;
 
 	private Poker mainApp;
 
@@ -81,11 +85,25 @@ public class TexasHoldemController implements Initializable {
 	}
 
 	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
-
+		
+		if(lstDrawResult.get(0).getLateDrawCount() == eDrawCount.FIRST) {
+			HboxCommon.getChildren().clear();
+			
+			for (Node n : getAllControls(parentNode, new HBox())) {
+				HBox h = (HBox) n;
+				if ((h.getId() != null) && (h.getId().contains("HBoxCardsp"))) {
+					h.getChildren().clear();
+				}
+			}
+			
+		}
 		for (DrawResult DR : lstDrawResult) {
 			// This is the common cards
 			if (DR.getP() == null) {
-				//TODO: Handle the draw event for the common cards
+				for (iCardDraw c : DR.getCards()) {
+					ImageView iCardImg = BuildImage(c.getiCardNbr(), 0);
+					AddCardToHbox("HboxCommon", iCardImg);
+				}
 			}
 			// This is the player cards
 			else if (DR.getP() != null) {
@@ -217,6 +235,11 @@ public class TexasHoldemController implements Initializable {
 	 * @since Lab #6
 	 * @param event
 	 */
+	@FXML
+	private void btnDraw(ActionEvent event) {
+		Action act = new Action(eAction.Draw,this.mainApp.getAppPlayer());
+		this.mainApp.messageSend(act);
+	}
 	@FXML
 	private void btnSitLeave(ActionEvent event) {
 

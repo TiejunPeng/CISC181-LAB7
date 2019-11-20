@@ -381,7 +381,7 @@ public class GamePlay {
 					this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
 				drawCards.add(c);
 			}
-			lstDR.add(new DrawResult(LastCardDraw, null, drawCards));
+			lstDR.add(new DrawResult(LastCardDraw, null, drawCards, this.LasteDrawCount));
 		}
 
 		if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
@@ -410,7 +410,7 @@ public class GamePlay {
 						drawCards.add(cClone);
 					}
 				}
-				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));				
+				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards, this.LasteDrawCount));				
 			}
 		}
 
